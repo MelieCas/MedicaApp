@@ -7,4 +7,7 @@
     <string name="contrasenya">Contrasenya</string>
     <string name="medicaplus">Medicaplus</string>
     <string name="registrar_se">Registrar-se</string>
+    <string name="nom">Nom</string>
+    <string name="email">Email</string>
+    <string name="confirmar_contrasenya">Confirmar Contrasenya</string>
 </resources>
