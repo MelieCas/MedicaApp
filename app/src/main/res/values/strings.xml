@@ -1,10 +1,23 @@
 <resources>
     <string name="app_name">MedicaApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="userName">Mélie Casares</string>
+    <string name="userName">Melie Casares</string>
+    <string name="appointmentTitle">Cites</string>
     <string name="usuari">Usuari</string>
     <string name="contrasenya">Contrasenya</string>
     <string name="medicaplus">Medicaplus</string>
     <string name="registrar_se">Registrar-se</string>
+    <string name="doctor_name">Doctor Name</string>
+    <string name="appointment_date">Appointment Date</string>
+    <string name="motive">Motiu: </string>
+    <string name="motiveText">motive</string>
+    <string name="configTitle">Configuracio</string>
+    <string name="dark_theme_label">Mode fosc: </string>
+    <string name="preferedName">Nom Preferit: </string>
+    <string name="text_size">Mida del text: </string>
+    <string name="size_example">A</string>
+    <string name="registerButton">Registro</string>
+    <string name="loginButton">Login</string>
+    <string name="appointmentButton">Cites</string>
+    <string name="preferencesButton">Preferencias</string>
 </resources>
