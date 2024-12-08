@@ -19,10 +19,17 @@ class MainActivity : AppCompatActivity() {
 
         btnSignIn.setOnClickListener { navigateToSignIn() }
 
+        btnLogIn.setOnClickListener { navigateToTestPage() }
+
     }
 
     private fun navigateToSignIn() {
         val intent = Intent(this, SignInActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToTestPage() {
+        val intent = Intent(this, TestPage::class.java)
         startActivity(intent)
     }
 }
