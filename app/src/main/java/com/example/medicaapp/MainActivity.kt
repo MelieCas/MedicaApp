@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToTestPage() {
-        val intent = Intent(this, TestPage::class.java)
+        val intent = Intent(this, Appointments::class.java)
         startActivity(intent)
     }
 }

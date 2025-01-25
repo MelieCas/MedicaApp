@@ -20,8 +20,12 @@
     <string name="registerButton">Registro</string>
     <string name="loginButton">Login</string>
     <string name="appointmentButton">Cites</string>
-    <string name="preferencesButton">Preferencias</string>
+    <string name="preferencesButton">Preferencies</string>
     <string name="nom">Nom</string>
     <string name="email">Email</string>
     <string name="confirmar_contrasenya">Confirmar Contrasenya</string>
+    <string name="perfil">Perfil</string>
+    <string name="tanca_sessio">Tanca sessio</string>
+    <string name="navigation_drawer_open">open navigation drawer</string>
+    <string name="navigation_drawer_close">close navigation drawer</string>
 </resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_appointment"
+            android:icon="@drawable/baseline_calendar_month_24"
+            android:title="@string/appointmentButton" />
+
+        <item
+            android:id="@+id/nav_preferences"
+            android:icon="@drawable/gear_icon_5"
+            android:title="@string/preferencesButton" />
+
+    </group>
+    <item android:title="@string/perfil">
+
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_profile"
+                    android:icon="@drawable/profile"
+                    android:title="@string/perfil" />
+
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/baseline_logout_24"
+                    android:title="@string/tanca_sessio" />
+            </group>
+        </menu>
+    </item>
+
+</menu>
