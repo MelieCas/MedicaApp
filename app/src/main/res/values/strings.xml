@@ -28,4 +28,5 @@
     <string name="tanca_sessio">Tanca sessio</string>
     <string name="navigation_drawer_open">open navigation drawer</string>
     <string name="navigation_drawer_close">close navigation drawer</string>
+    <string name="cancelAppointment">Cancel·lar cita</string>
 </resources>

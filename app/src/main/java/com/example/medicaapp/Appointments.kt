@@ -15,12 +15,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
 class Appointments : AppCompatActivity() {
     var drawerLayout: DrawerLayout? = null;
     var navigationView: NavigationView? = null;
     var toolbar: Toolbar? = null;
+    var bottomNav: BottomNavigationView? = null;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,6 +30,7 @@ class Appointments : AppCompatActivity() {
         drawerLayout = findViewById<DrawerLayout>(R.id.main)
         navigationView = findViewById<NavigationView>(R.id.drawer_nav)
         toolbar = findViewById<Toolbar>(R.id.toolbar)
+        bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
         val appointmentListView = findViewById<RecyclerView>(R.id.appointmentList)
         appointmentListView.layoutManager = LinearLayoutManager(this)
         val appointments: ArrayList<AppointmentModel> = ArrayList<AppointmentModel>()
@@ -79,6 +82,24 @@ class Appointments : AppCompatActivity() {
             }
             drawerLayout?.closeDrawer(GravityCompat.START)
             true
+        }
+
+        bottomNav?.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.bottom_preferences -> {
+                    val intent: Intent = Intent(
+                        this@Appointments,
+                        Preferences::class.java
+
+                    )
+                    startActivity(intent)
+                    true
+                }
+
+                else -> {
+                    false
+                }
+            }
         }
 
         navigationView?.setCheckedItem(R.id.nav_appointment);

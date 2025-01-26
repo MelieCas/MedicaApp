@@ -4,12 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.io.Console
 
-class AppointmentRVAdapter internal constructor(context: Context?, data: List<AppointmentModel>) :
+class AppointmentRVAdapter internal constructor(context: Context?, data: MutableList<AppointmentModel>) :
     RecyclerView.Adapter<AppointmentRVAdapter.ViewHolder>() {
-    private val mData: List<AppointmentModel> = data
+    private var mData: MutableList<AppointmentModel> = data
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -18,6 +20,8 @@ class AppointmentRVAdapter internal constructor(context: Context?, data: List<Ap
         var doctorName: TextView = itemView.findViewById<TextView>(R.id.doctorName)
         var reason: TextView = itemView.findViewById<TextView>(R.id.motiveText)
         var appointmentDate: TextView = itemView.findViewById<TextView>(R.id.appointmentDate)
+        var deleteButton: Button = itemView.findViewById<Button>(R.id.cancelAppointment)
+
     }
 
 
@@ -27,11 +31,19 @@ class AppointmentRVAdapter internal constructor(context: Context?, data: List<Ap
         return ViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val appointment: AppointmentModel = mData[position]
         holder.doctorName.setText(appointment.doctor)
         holder.reason.setText(appointment.motive)
         holder.appointmentDate.setText(appointment.date)
+
+        holder.deleteButton.setOnClickListener(View.OnClickListener {
+            mData.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, itemCount)
+
+        })
 
     }
 

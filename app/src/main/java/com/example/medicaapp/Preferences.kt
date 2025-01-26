@@ -11,12 +11,14 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
 class Preferences : AppCompatActivity() {
     var drawerLayout: DrawerLayout? = null;
     var navigationView: NavigationView? = null;
     var toolbar: Toolbar? = null;
+    var bottomNav: BottomNavigationView? = null;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,6 +26,7 @@ class Preferences : AppCompatActivity() {
         drawerLayout = findViewById<DrawerLayout>(R.id.main)
         navigationView = findViewById<NavigationView>(R.id.drawer_nav)
         toolbar = findViewById<Toolbar>(R.id.toolbar)
+        bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -67,6 +70,25 @@ class Preferences : AppCompatActivity() {
         }
 
         navigationView?.setCheckedItem(R.id.nav_preferences);
+
+
+        bottomNav?.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.bottom_appointment -> {
+                    val intent: Intent = Intent(
+                        this@Preferences,
+                        Appointments::class.java
+
+                    )
+                    startActivity(intent)
+                    true
+                }
+
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
