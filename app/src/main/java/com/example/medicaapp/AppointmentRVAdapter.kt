@@ -12,12 +12,11 @@ import com.example.medicaapp.data.RetrofitService
 import kotlinx.coroutines.launch
 import retrofit2.http.DELETE
 
-class AppointmentRVAdapter internal constructor(context: Context?, data: MutableList<Cites>, service : RetrofitService, private val onDelete: (Int) -> (Unit)) :
+class AppointmentRVAdapter internal constructor(data: MutableList<Cites>, service : RetrofitService, private val onDelete: (Int) -> (Unit)) :
     RecyclerView.Adapter<AppointmentRVAdapter.ViewHolder>() {
     private var mData: MutableList<Cites> = data
     private var serviceRetrofit = service;
 
-    private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
     inner class ViewHolder internal constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {

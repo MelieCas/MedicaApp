@@ -26,11 +26,12 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 
 class Appointments : AppCompatActivity() {
-    private lateinit var adapter: AppointmentRVAdapter
+    private lateinit var adapterAppointments: AppointmentRVAdapter
+    private lateinit var appointmentListView: RecyclerView;
     var drawerLayout: DrawerLayout? = null;
     var navigationView: NavigationView? = null;
     var toolbar: Toolbar? = null;
-    val cites: ArrayList<Cites>? = null;
+    val cites: MutableList<Cites> = ArrayList()
     var bottomNav: BottomNavigationView? = null;
     val service = RetrofitServiceFactory.makeRetrofitService()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,23 +44,23 @@ class Appointments : AppCompatActivity() {
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
 
 
-        lifecycleScope.launch { 
-            val cites = service.getCites()
-            println(cites)
 
 
-        }
-        val appointmentListView = findViewById<RecyclerView>(R.id.appointmentList)
+        appointmentListView = findViewById<RecyclerView>(R.id.appointmentList)
         appointmentListView.layoutManager = LinearLayoutManager(this)
 
+        adapterAppointments = AppointmentRVAdapter(cites, service) { position ->
+            val citaId = cites[position].id
+            deleteCita(citaId, position)}
+
+        appointmentListView.adapter = adapterAppointments
+
+        getUsers()
         val addAppointmentButton = findViewById<Button>(R.id.addAppointemntsButton)
 
         addAppointmentButton.setOnClickListener {showCreateAppointmentDialog()}
 
-        adapter = cites?.let { AppointmentRVAdapter(this, it, service) { position ->
-            val citaId = it[position].id
-            deleteCita(citaId, position)} }!!
-        appointmentListView.adapter = adapter
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -129,7 +130,7 @@ class Appointments : AppCompatActivity() {
         lifecycleScope.launch {
             val response = service.deleteCita(citaId)
             if (response.isSuccessful) {
-                adapter.removeItem(position)
+                adapterAppointments.removeItem(position)
             }
         }
     }
@@ -165,7 +166,7 @@ class Appointments : AppCompatActivity() {
 
 
         val alertDialog = AlertDialog.Builder(this)
-            .setTitle("Crear Cita")
+            .setTitle("Crea Cita")
             .setView(dialogView)
             .setPositiveButton("Crear") { dialog, which ->
                 val dataCita = editTextDataCita.text.toString()
@@ -175,13 +176,13 @@ class Appointments : AppCompatActivity() {
 
                 if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
                     val cita = Cites(dataCita, doctor, 0, motiu, "Melie Casares")
-                    Toast.makeText(this, "Cita creada para Melie Casares", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Cita creada per a Melie Casares", Toast.LENGTH_SHORT).show()
                     lifecycleScope.launch {
                         createCita(cita)
                     }
 
                 } else {
-                    Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "completa tots els camps demanats", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancelar") { dialog, which ->
@@ -193,6 +194,23 @@ class Appointments : AppCompatActivity() {
 
     suspend fun createCita(cita : Cites) {
         val response = service.addCita(cita);
+        println(cita)
+        if (response.isSuccessful) {
+            println("cita created: ${response.body()}")
+        } else {
+            println("Failed to create cita: ${response.errorBody()?.string()}")
+        }
+    }
+
+    fun getUsers() {
+        lifecycleScope.launch {
+            val citesData = service.getCites()
+            println(citesData)
+
+            cites.addAll(citesData)
+            println(cites)
+            adapterAppointments.notifyDataSetChanged()
+        }
     }
 
 
