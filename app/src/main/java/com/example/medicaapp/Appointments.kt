@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 
@@ -48,12 +50,10 @@ class Appointments : AppCompatActivity() {
         }
         val appointmentListView = findViewById<RecyclerView>(R.id.appointmentList)
         appointmentListView.layoutManager = LinearLayoutManager(this)
-        val appointments: ArrayList<AppointmentModel> = ArrayList<AppointmentModel>()
-        appointments.add(AppointmentModel("Revisió setmanal", "Juan Perez", "09/03/2025"))
-        appointments.add(AppointmentModel("Dolor de cap", "Juan Perez", "12/04/2025"))
-        appointments.add(AppointmentModel("Demanar analítica", "Juan Perez", "16/07/2025"))
-        appointments.add(AppointmentModel("Revisió analítica", "Juan Perez", "20/09/2025"))
-        appointments.add(AppointmentModel("Renovar medicaments", "Juan perez", "22/10/2025"))
+
+        val addAppointmentButton = findViewById<Button>(R.id.addAppointemntsButton)
+
+        addAppointmentButton.setOnClickListener {showCreateAppointmentDialog()}
 
         val rvAdapter: AppointmentRVAdapter? = cites?.let { AppointmentRVAdapter(this, it) }
         appointmentListView.adapter = rvAdapter
@@ -141,17 +141,17 @@ class Appointments : AppCompatActivity() {
         return false
     }
 
-    private suspend fun showCreateAppointmentDialog() {
+    private fun showCreateAppointmentDialog() {
 
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.create_appointment_popup, null)
 
-        // Inicializar los campos del formulario
+
         val editTextDataCita: EditText = dialogView.findViewById(R.id.editTextDataCita)
         val editTextDoctor: EditText = dialogView.findViewById(R.id.editTextDoctor)
         val editTextMotiu: EditText = dialogView.findViewById(R.id.editTextMotiu)
-ç
-        // Crear el AlertDialog
+
+
         val alertDialog = AlertDialog.Builder(this)
             .setTitle("Crear Cita")
             .setView(dialogView)
@@ -160,11 +160,14 @@ class Appointments : AppCompatActivity() {
                 val doctor = editTextDoctor.text.toString()
                 val motiu = editTextMotiu.text.toString()
 
-                // Aquí puedes usar los datos de la cita
+
                 if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
                     val cita = Cites(dataCita, doctor, 0, motiu, "Melie Casares")
                     Toast.makeText(this, "Cita creada para Melie Casares", Toast.LENGTH_SHORT).show()
-                    createCita(cita)
+                    lifecycleScope.launch {
+                        createCita(cita)
+                    }
+
                 } else {
                     Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
                 }
