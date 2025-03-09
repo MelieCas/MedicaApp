@@ -39,7 +39,7 @@ class AppointmentRVAdapter internal constructor(data: MutableList<Cites>, servic
         val appointment: Cites = mData[position]
         holder.doctorName.setText(appointment.doctor)
         holder.reason.setText(appointment.motiu)
-        holder.appointmentDate.setText(appointment.data_cita)
+        holder.appointmentDate.setText(appointment.data_cita.split("T")[0])
 
         holder.deleteButton.setOnClickListener(View.OnClickListener {
             onDelete(position)
