@@ -194,6 +194,8 @@ class Appointments : AppCompatActivity() {
 
     suspend fun createCita(cita : Cites) {
         val response = service.addCita(cita);
+        cites.add(cita)
+        adapterAppointments.notifyDataSetChanged()
         println(cita)
         if (response.isSuccessful) {
             println("cita created: ${response.body()}")
