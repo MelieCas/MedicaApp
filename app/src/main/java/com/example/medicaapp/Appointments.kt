@@ -26,6 +26,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 
 class Appointments : AppCompatActivity() {
+    private lateinit var adapter: AppointmentRVAdapter
     var drawerLayout: DrawerLayout? = null;
     var navigationView: NavigationView? = null;
     var toolbar: Toolbar? = null;
@@ -55,8 +56,10 @@ class Appointments : AppCompatActivity() {
 
         addAppointmentButton.setOnClickListener {showCreateAppointmentDialog()}
 
-        val rvAdapter: AppointmentRVAdapter? = cites?.let { AppointmentRVAdapter(this, it) }
-        appointmentListView.adapter = rvAdapter
+        adapter = cites?.let { AppointmentRVAdapter(this, it, service) { position ->
+            val citaId = it[position].id
+            deleteCita(citaId, position)} }!!
+        appointmentListView.adapter = adapter
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -120,6 +123,15 @@ class Appointments : AppCompatActivity() {
         navigationView?.setCheckedItem(R.id.nav_appointment);
 
 
+    }
+
+    private fun deleteCita(citaId: Int, position: Int) {
+        lifecycleScope.launch {
+            val response = service.deleteCita(citaId)
+            if (response.isSuccessful) {
+                adapter.removeItem(position)
+            }
+        }
     }
 
     override fun onBackPressed() {

@@ -6,11 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicaapp.data.RetrofitService
+import kotlinx.coroutines.launch
+import retrofit2.http.DELETE
 
-class AppointmentRVAdapter internal constructor(context: Context?, data: MutableList<Cites>) :
+class AppointmentRVAdapter internal constructor(context: Context?, data: MutableList<Cites>, service : RetrofitService, private val onDelete: (Int) -> (Unit)) :
     RecyclerView.Adapter<AppointmentRVAdapter.ViewHolder>() {
     private var mData: MutableList<Cites> = data
+    private var serviceRetrofit = service;
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -38,9 +43,8 @@ class AppointmentRVAdapter internal constructor(context: Context?, data: Mutable
         holder.appointmentDate.setText(appointment.data_cita)
 
         holder.deleteButton.setOnClickListener(View.OnClickListener {
-            mData.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, itemCount)
+            onDelete(position)
+
 
         })
 
@@ -48,5 +52,11 @@ class AppointmentRVAdapter internal constructor(context: Context?, data: Mutable
 
     override fun getItemCount(): Int {
         return mData.size
+    }
+
+    fun removeItem(position: Int) {
+        mData.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, itemCount)
     }
 }
