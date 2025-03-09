@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.io.Console
 
-class AppointmentRVAdapter internal constructor(context: Context?, data: MutableList<AppointmentModel>) :
+class AppointmentRVAdapter internal constructor(context: Context?, data: MutableList<Cites>) :
     RecyclerView.Adapter<AppointmentRVAdapter.ViewHolder>() {
-    private var mData: MutableList<AppointmentModel> = data
+    private var mData: MutableList<Cites> = data
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -33,10 +32,10 @@ class AppointmentRVAdapter internal constructor(context: Context?, data: Mutable
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val appointment: AppointmentModel = mData[position]
+        val appointment: Cites = mData[position]
         holder.doctorName.setText(appointment.doctor)
-        holder.reason.setText(appointment.motive)
-        holder.appointmentDate.setText(appointment.date)
+        holder.reason.setText(appointment.motiu)
+        holder.appointmentDate.setText(appointment.data_cita)
 
         holder.deleteButton.setOnClickListener(View.OnClickListener {
             mData.removeAt(position)

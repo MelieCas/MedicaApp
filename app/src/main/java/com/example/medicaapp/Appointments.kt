@@ -1,9 +1,11 @@
 package com.example.medicaapp
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.window.OnBackInvokedDispatcher
+import android.widget.EditText
+import android.widget.Toast
 
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -13,16 +15,21 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicaapp.data.RetrofitServiceFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 
 class Appointments : AppCompatActivity() {
     var drawerLayout: DrawerLayout? = null;
     var navigationView: NavigationView? = null;
     var toolbar: Toolbar? = null;
+    val cites: ArrayList<Cites>? = null;
     var bottomNav: BottomNavigationView? = null;
+    val service = RetrofitServiceFactory.makeRetrofitService()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,6 +38,14 @@ class Appointments : AppCompatActivity() {
         navigationView = findViewById<NavigationView>(R.id.drawer_nav)
         toolbar = findViewById<Toolbar>(R.id.toolbar)
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigatin_view)
+
+
+        lifecycleScope.launch { 
+            val cites = service.getCites()
+            println(cites)
+
+
+        }
         val appointmentListView = findViewById<RecyclerView>(R.id.appointmentList)
         appointmentListView.layoutManager = LinearLayoutManager(this)
         val appointments: ArrayList<AppointmentModel> = ArrayList<AppointmentModel>()
@@ -40,7 +55,7 @@ class Appointments : AppCompatActivity() {
         appointments.add(AppointmentModel("Revisió analítica", "Juan Perez", "20/09/2025"))
         appointments.add(AppointmentModel("Renovar medicaments", "Juan perez", "22/10/2025"))
 
-        val rvAdapter: AppointmentRVAdapter = AppointmentRVAdapter(this, appointments)
+        val rvAdapter: AppointmentRVAdapter? = cites?.let { AppointmentRVAdapter(this, it) }
         appointmentListView.adapter = rvAdapter
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -124,6 +139,45 @@ class Appointments : AppCompatActivity() {
             }
         }
         return false
+    }
+
+    private suspend fun showCreateAppointmentDialog() {
+
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.create_appointment_popup, null)
+
+        // Inicializar los campos del formulario
+        val editTextDataCita: EditText = dialogView.findViewById(R.id.editTextDataCita)
+        val editTextDoctor: EditText = dialogView.findViewById(R.id.editTextDoctor)
+        val editTextMotiu: EditText = dialogView.findViewById(R.id.editTextMotiu)
+ç
+        // Crear el AlertDialog
+        val alertDialog = AlertDialog.Builder(this)
+            .setTitle("Crear Cita")
+            .setView(dialogView)
+            .setPositiveButton("Crear") { dialog, which ->
+                val dataCita = editTextDataCita.text.toString()
+                val doctor = editTextDoctor.text.toString()
+                val motiu = editTextMotiu.text.toString()
+
+                // Aquí puedes usar los datos de la cita
+                if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
+                    val cita = Cites(dataCita, doctor, 0, motiu, "Melie Casares")
+                    Toast.makeText(this, "Cita creada para Melie Casares", Toast.LENGTH_SHORT).show()
+                    createCita(cita)
+                } else {
+                    Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancelar") { dialog, which ->
+                dialog.dismiss()
+            }
+
+        alertDialog.show()
+    }
+
+    suspend fun createCita(cita : Cites) {
+        val response = service.addCita(cita);
     }
 
 
