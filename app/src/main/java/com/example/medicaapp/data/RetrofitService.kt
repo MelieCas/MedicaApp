@@ -12,6 +12,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -29,6 +30,8 @@ interface RetrofitService {
     ): MutableList<Cites>
     @POST("/cita")
     suspend fun addCita(@Body cita : Cites): Response<Cites>
+    @PUT("/cita/{cita_id}")
+    suspend fun updateCita(@Path("cita_id") citaId: Int, @Body cita: Cites): Response<Cites>
     @DELETE("/cita/{cita_id}")
     suspend fun deleteCita(@Path("cita_id") citaId: Int): Response<ResponseBody>
 }
