@@ -1,9 +1,9 @@
 package com.example.medicaapp
 
 data class Cites(
-    val data_cita: String,
-    val doctor: String,
+    var data_cita: String,
+    var doctor: String,
     val id: Int,
-    val motiu: String,
+    var motiu: String,
     val pacient: String
 )

@@ -34,6 +34,7 @@ class Appointments : AppCompatActivity() {
     val cites: MutableList<Cites> = ArrayList()
     var bottomNav: BottomNavigationView? = null;
     val service = RetrofitServiceFactory.makeRetrofitService()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,9 +50,14 @@ class Appointments : AppCompatActivity() {
         appointmentListView = findViewById<RecyclerView>(R.id.appointmentList)
         appointmentListView.layoutManager = LinearLayoutManager(this)
 
-        adapterAppointments = AppointmentRVAdapter(cites, service) { position ->
-            val citaId = cites[position].id
-            deleteCita(citaId, position)}
+        adapterAppointments = AppointmentRVAdapter(cites, service,
+            { position ->
+                val citaId = cites[position].id
+                deleteCita(citaId, position)
+            },
+            { position, cita ->
+                showUpdateAppointmentDialog(position, cita)
+            })
 
         appointmentListView.adapter = adapterAppointments
 
@@ -59,6 +65,8 @@ class Appointments : AppCompatActivity() {
         val addAppointmentButton = findViewById<Button>(R.id.addAppointemntsButton)
 
         addAppointmentButton.setOnClickListener {showCreateAppointmentDialog()}
+
+
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -192,6 +200,51 @@ class Appointments : AppCompatActivity() {
         alertDialog.show()
     }
 
+    private fun showUpdateAppointmentDialog(position: Int, cita: Cites) {
+
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.create_appointment_popup, null)
+
+
+        val editTextDataCita: EditText = dialogView.findViewById(R.id.editTextDataCita)
+        val editTextDoctor: EditText = dialogView.findViewById(R.id.editTextDoctor)
+        val editTextMotiu: EditText = dialogView.findViewById(R.id.editTextMotiu)
+
+        editTextDataCita.setText(cita.data_cita.split("T")[0])
+        editTextDoctor.setText(cita.doctor)
+        editTextMotiu.setText(cita.motiu)
+
+
+        val alertDialog = AlertDialog.Builder(this)
+            .setTitle("Modificar Cita")
+            .setView(dialogView)
+            .setPositiveButton("Modificar") { dialog, which ->
+                val dataCita = editTextDataCita.text.toString()
+                val doctor = editTextDoctor.text.toString()
+                val motiu = editTextMotiu.text.toString()
+
+                cita.data_cita = dataCita
+                cita.doctor = doctor
+                cita.motiu = motiu
+
+
+                if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
+                    Toast.makeText(this, "Cita modificada per a Melie Casares", Toast.LENGTH_SHORT).show()
+                    lifecycleScope.launch {
+                        updateCita(position, cita)
+                    }
+
+                } else {
+                    Toast.makeText(this, "completa tots els camps demanats", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancelar") { dialog, which ->
+                dialog.dismiss()
+            }
+
+        alertDialog.show()
+    }
+
     suspend fun createCita(cita : Cites) {
         val response = service.addCita(cita);
         cites.add(cita)
@@ -201,6 +254,17 @@ class Appointments : AppCompatActivity() {
             println("cita created: ${response.body()}")
         } else {
             println("Failed to create cita: ${response.errorBody()?.string()}")
+        }
+    }
+
+    suspend fun updateCita(position: Int, cita : Cites) {
+        val response = service.updateCita(cita.id, cita)
+        if (response.isSuccessful) {
+            adapterAppointments.modifyItem(position, cita)
+            adapterAppointments.notifyItemChanged(position)
+            Toast.makeText(this@Appointments, "Cita modificada amb èxit", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this@Appointments, "Error en modificar la cita", Toast.LENGTH_SHORT).show()
         }
     }
 

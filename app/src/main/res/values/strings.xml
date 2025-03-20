@@ -30,4 +30,5 @@
     <string name="navigation_drawer_close">close navigation drawer</string>
     <string name="cancelAppointment">Cancel·lar cita</string>
     <string name="add_appointment_text">Demanar Cita</string>
+    <string name="modificar_cita">Modificar cita</string>
 </resources>

@@ -12,7 +12,7 @@ import com.example.medicaapp.data.RetrofitService
 import kotlinx.coroutines.launch
 import retrofit2.http.DELETE
 
-class AppointmentRVAdapter internal constructor(data: MutableList<Cites>, service : RetrofitService, private val onDelete: (Int) -> (Unit)) :
+class AppointmentRVAdapter internal constructor(data: MutableList<Cites>, service : RetrofitService, private val onDelete: (Int) -> (Unit), private val onUpdate: (Int, Cites) -> (Unit)) :
     RecyclerView.Adapter<AppointmentRVAdapter.ViewHolder>() {
     private var mData: MutableList<Cites> = data
     private var serviceRetrofit = service;
@@ -24,6 +24,7 @@ class AppointmentRVAdapter internal constructor(data: MutableList<Cites>, servic
         var reason: TextView = itemView.findViewById<TextView>(R.id.motiveText)
         var appointmentDate: TextView = itemView.findViewById<TextView>(R.id.appointmentDate)
         var deleteButton: Button = itemView.findViewById<Button>(R.id.cancelAppointment)
+        var updateButton: Button = itemView.findViewById<Button>(R.id.updateAppointment)
 
     }
 
@@ -44,7 +45,10 @@ class AppointmentRVAdapter internal constructor(data: MutableList<Cites>, servic
         holder.deleteButton.setOnClickListener(View.OnClickListener {
             onDelete(position)
 
+        })
 
+        holder.updateButton.setOnClickListener(View.OnClickListener {
+            onUpdate(position, appointment)
         })
 
     }
@@ -56,6 +60,12 @@ class AppointmentRVAdapter internal constructor(data: MutableList<Cites>, servic
     fun removeItem(position: Int) {
         mData.removeAt(position)
         notifyItemRemoved(position)
+        notifyItemRangeChanged(position, itemCount)
+    }
+
+    fun modifyItem(position: Int, cita: Cites) {
+        mData[position] = cita
+        notifyItemChanged(position)
         notifyItemRangeChanged(position, itemCount)
     }
 }
