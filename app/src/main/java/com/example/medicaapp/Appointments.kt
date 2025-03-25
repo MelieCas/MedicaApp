@@ -93,18 +93,12 @@ class Appointments : AppCompatActivity() {
         navigationView?.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_preferences -> {
-                    val intent: Intent = Intent(
-                        this@Appointments,
-                        Preferences::class.java
-                    )
+                    val intent: Intent = Intent( this@Appointments, Preferences::class.java)
                     startActivity(intent)
                 }
 
                 R.id.nav_logout -> {
-                    val intent: Intent = Intent(
-                        this@Appointments,
-                        MainActivity::class.java
-                    )
+                    val intent: Intent = Intent( this@Appointments, MainActivity::class.java)
                     startActivity(intent)
                 }
 
@@ -116,44 +110,30 @@ class Appointments : AppCompatActivity() {
         bottomNav?.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.bottom_preferences -> {
-                    val intent: Intent = Intent(
-                        this@Appointments,
-                        Preferences::class.java
-
-                    )
+                    val intent: Intent = Intent( this@Appointments, Preferences::class.java)
                     startActivity(intent)
                     true
                 }
-
                 else -> {
                     false
                 }
             }
         }
-
         navigationView?.setCheckedItem(R.id.nav_appointment);
-
-
     }
 
     private fun deleteCita(citaId: Int, position: Int) {
         lifecycleScope.launch(Dispatchers.IO) {
             val response = service.deleteCita(citaId)
             withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    adapterAppointments.removeItem(position)
-                }
+                if (response.isSuccessful) adapterAppointments.removeItem(position)
             }
         }
     }
 
     override fun onBackPressed() {
-        if (drawerLayout?.isDrawerOpen(GravityCompat.START) == true) {
-            drawerLayout?.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed();
-        }
-
+        if (drawerLayout?.isDrawerOpen(GravityCompat.START) == true) drawerLayout?.closeDrawer(GravityCompat.START)
+        else super.onBackPressed();
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -172,27 +152,24 @@ class Appointments : AppCompatActivity() {
         val dialogView = inflater.inflate(R.layout.create_appointment_popup, null)
 
 
-        val editTextDataCita: EditText = dialogView.findViewById(R.id.editTextDataCita)
-        val editTextDoctor: EditText = dialogView.findViewById(R.id.editTextDoctor)
-        val editTextMotiu: EditText = dialogView.findViewById(R.id.editTextMotiu)
+        val dataCitaET: EditText = dialogView.findViewById(R.id.editTextDataCita)
+        val doctorET: EditText = dialogView.findViewById(R.id.editTextDoctor)
+        val motiuET: EditText = dialogView.findViewById(R.id.editTextMotiu)
 
 
         val alertDialog = AlertDialog.Builder(this)
             .setTitle("Crea Cita")
             .setView(dialogView)
             .setPositiveButton("Crear") { dialog, which ->
-                val dataCita = editTextDataCita.text.toString()
-                val doctor = editTextDoctor.text.toString()
-                val motiu = editTextMotiu.text.toString()
+                val dataCita = dataCitaET.text.toString()
+                val doctor = doctorET.text.toString()
+                val motiu = motiuET.text.toString()
 
 
                 if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
                     val cita = Cites(dataCita, doctor, 0, motiu, "Melie Casares")
+                    lifecycleScope.launch(Dispatchers.IO) { createCita(cita) }
                     Toast.makeText(this, "Cita creada per a Melie Casares", Toast.LENGTH_SHORT).show()
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        createCita(cita)
-                    }
-
                 } else {
                     Toast.makeText(this, "completa tots els camps demanats", Toast.LENGTH_SHORT).show()
                 }
