@@ -29,7 +29,7 @@ interface RetrofitService {
 
     ): MutableList<Cites>
     @POST("/cita")
-    suspend fun addCita(@Body cita : Cites): Response<Cites>
+    suspend fun addCita(@Body cita : Cites): Response<ResponseBody>
     @PUT("/cita/{cita_id}")
     suspend fun updateCita(@Path("cita_id") citaId: Int, @Body cita: Cites): Response<Cites>
     @DELETE("/cita/{cita_id}")

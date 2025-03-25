@@ -25,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class Appointments : AppCompatActivity() {
     private lateinit var adapterAppointments: AppointmentRVAdapter
@@ -138,8 +139,10 @@ class Appointments : AppCompatActivity() {
     private fun deleteCita(citaId: Int, position: Int) {
         lifecycleScope.launch(Dispatchers.IO) {
             val response = service.deleteCita(citaId)
-            if (response.isSuccessful) {
-                adapterAppointments.removeItem(position)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    adapterAppointments.removeItem(position)
+                }
             }
         }
     }
@@ -247,25 +250,31 @@ class Appointments : AppCompatActivity() {
     }
 
     suspend fun createCita(cita : Cites) {
-        val response = service.addCita(cita);
-        cites.add(cita)
-        adapterAppointments.notifyDataSetChanged()
-        println(cita)
-        if (response.isSuccessful) {
-            println("cita created: ${response.body()}")
-        } else {
-            println("Failed to create cita: ${response.errorBody()?.string()}")
+        val response = service.addCita(cita)
+        withContext(Dispatchers.Main) {
+            if (response.isSuccessful) {
+                cites.add(cita)
+                adapterAppointments.notifyDataSetChanged()
+                println(cita)
+                println("cita created: ${response.body()}")
+            } else {
+                println("Failed to create cita: ${response.errorBody()?.string()}")
+            }
         }
     }
 
     suspend fun updateCita(position: Int, cita : Cites) {
         val response = service.updateCita(cita.id, cita)
-        if (response.isSuccessful) {
-            adapterAppointments.modifyItem(position, cita)
-            adapterAppointments.notifyItemChanged(position)
-            Toast.makeText(this@Appointments, "Cita modificada amb èxit", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this@Appointments, "Error en modificar la cita", Toast.LENGTH_SHORT).show()
+        withContext(Dispatchers.Main) {
+            if (response.isSuccessful) {
+                adapterAppointments.modifyItem(position, cita)
+                adapterAppointments.notifyItemChanged(position)
+                Toast.makeText(this@Appointments, "Cita modificada amb èxit", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(this@Appointments, "Error en modificar la cita", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 
@@ -274,9 +283,11 @@ class Appointments : AppCompatActivity() {
             val citesData = service.getCites()
             println(citesData)
 
-            cites.addAll(citesData)
-            println(cites)
-            adapterAppointments.notifyDataSetChanged()
+            withContext(Dispatchers.Main) {
+                cites.addAll(citesData)
+                println(cites)
+                adapterAppointments.notifyDataSetChanged()
+            }
         }
     }
 
