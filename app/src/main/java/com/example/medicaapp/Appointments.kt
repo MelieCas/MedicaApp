@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.medicaapp.data.RetrofitServiceFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class Appointments : AppCompatActivity() {
@@ -135,7 +136,7 @@ class Appointments : AppCompatActivity() {
     }
 
     private fun deleteCita(citaId: Int, position: Int) {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val response = service.deleteCita(citaId)
             if (response.isSuccessful) {
                 adapterAppointments.removeItem(position)
@@ -185,7 +186,7 @@ class Appointments : AppCompatActivity() {
                 if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
                     val cita = Cites(dataCita, doctor, 0, motiu, "Melie Casares")
                     Toast.makeText(this, "Cita creada per a Melie Casares", Toast.LENGTH_SHORT).show()
-                    lifecycleScope.launch {
+                    lifecycleScope.launch(Dispatchers.IO) {
                         createCita(cita)
                     }
 
@@ -230,7 +231,7 @@ class Appointments : AppCompatActivity() {
 
                 if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
                     Toast.makeText(this, "Cita modificada per a Melie Casares", Toast.LENGTH_SHORT).show()
-                    lifecycleScope.launch {
+                    lifecycleScope.launch (Dispatchers.IO){
                         updateCita(position, cita)
                     }
 
@@ -269,7 +270,7 @@ class Appointments : AppCompatActivity() {
     }
 
     fun getUsers() {
-        lifecycleScope.launch {
+        lifecycleScope.launch (Dispatchers.IO) {
             val citesData = service.getCites()
             println(citesData)
 
