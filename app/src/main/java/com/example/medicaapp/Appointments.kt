@@ -187,22 +187,22 @@ class Appointments : AppCompatActivity() {
         val dialogView = inflater.inflate(R.layout.create_appointment_popup, null)
 
 
-        val editTextDataCita: EditText = dialogView.findViewById(R.id.editTextDataCita)
-        val editTextDoctor: EditText = dialogView.findViewById(R.id.editTextDoctor)
-        val editTextMotiu: EditText = dialogView.findViewById(R.id.editTextMotiu)
+        val dataCitaET: EditText = dialogView.findViewById(R.id.editTextDataCita)
+        val doctorET: EditText = dialogView.findViewById(R.id.editTextDoctor)
+        val motiuET: EditText = dialogView.findViewById(R.id.editTextMotiu)
 
-        editTextDataCita.setText(cita.data_cita.split("T")[0])
-        editTextDoctor.setText(cita.doctor)
-        editTextMotiu.setText(cita.motiu)
+        dataCitaET.setText(cita.data_cita.split("T")[0])
+        doctorET.setText(cita.doctor)
+        motiuET.setText(cita.motiu)
 
 
         val alertDialog = AlertDialog.Builder(this)
             .setTitle("Modificar Cita")
             .setView(dialogView)
             .setPositiveButton("Modificar") { dialog, which ->
-                val dataCita = editTextDataCita.text.toString()
-                val doctor = editTextDoctor.text.toString()
-                val motiu = editTextMotiu.text.toString()
+                val dataCita = dataCitaET.text.toString()
+                val doctor = doctorET.text.toString()
+                val motiu = motiuET.text.toString()
 
                 cita.data_cita = dataCita
                 cita.doctor = doctor
@@ -211,10 +211,7 @@ class Appointments : AppCompatActivity() {
 
                 if (dataCita.isNotEmpty() && doctor.isNotEmpty() && motiu.isNotEmpty()) {
                     Toast.makeText(this, "Cita modificada per a Melie Casares", Toast.LENGTH_SHORT).show()
-                    lifecycleScope.launch (Dispatchers.IO){
-                        updateCita(position, cita)
-                    }
-
+                    lifecycleScope.launch (Dispatchers.IO){ updateCita(position, cita) }
                 } else {
                     Toast.makeText(this, "completa tots els camps demanats", Toast.LENGTH_SHORT).show()
                 }
@@ -246,11 +243,9 @@ class Appointments : AppCompatActivity() {
             if (response.isSuccessful) {
                 adapterAppointments.modifyItem(position, cita)
                 adapterAppointments.notifyItemChanged(position)
-                Toast.makeText(this@Appointments, "Cita modificada amb èxit", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this@Appointments, "Cita modificada amb èxit", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this@Appointments, "Error en modificar la cita", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this@Appointments, "Error en modificar la cita", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -267,6 +262,4 @@ class Appointments : AppCompatActivity() {
             }
         }
     }
-
-
 }
