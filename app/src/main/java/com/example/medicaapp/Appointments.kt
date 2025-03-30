@@ -176,10 +176,12 @@ class Appointments : AppCompatActivity() {
                             println(e)
                         }
                     }
-                    Toast.makeText(this, "Cita creada per a Melie Casares", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Cita creada per a Melie Casares", Toast.LENGTH_SHORT)
+                        .show()
 
                 } else {
-                    Toast.makeText(this, "completa tots els camps demanats", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "completa tots els camps demanats", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             .setNegativeButton("Cancelar") { dialog, which ->
