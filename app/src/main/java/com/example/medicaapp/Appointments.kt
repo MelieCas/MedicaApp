@@ -190,7 +190,12 @@ class Appointments : AppCompatActivity() {
                     val cita = Cites(dataCita, doctor, 0, motiu, "Melie Casares")
                     Toast.makeText(this, "Cita creada per a Melie Casares", Toast.LENGTH_SHORT).show()
                     lifecycleScope.launch(Dispatchers.IO) {
-                        createCita(cita)
+                        try {
+                            createCita(cita)
+                        } catch (e : Exception) {
+                            println(e)
+                        }
+
                     }
 
                 } else {
@@ -280,14 +285,20 @@ class Appointments : AppCompatActivity() {
 
     fun getUsers() {
         lifecycleScope.launch (Dispatchers.IO) {
-            val citesData = service.getCites()
-            println(citesData)
-
-            withContext(Dispatchers.Main) {
-                cites.addAll(citesData)
-                println(cites)
-                adapterAppointments.notifyDataSetChanged()
+            try {
+                val citesData = service.getCites()
+                println(citesData)
+                withContext(Dispatchers.Main) {
+                    cites.addAll(citesData)
+                    println(cites)
+                    adapterAppointments.notifyDataSetChanged()
+                }
+            } catch (e: Exception) {
+                println(e)
             }
+
+
+
         }
     }
 
