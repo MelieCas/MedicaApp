@@ -15,4 +15,10 @@
         android:icon="@drawable/profile"
         android:title="@string/perfil" />
 
+    <item
+        android:id="@+id/bottom_graph"
+        android:icon="@drawable/baseline_bar_chart_24"
+        android:title="@string/Stats"
+        />
+
 </menu>
