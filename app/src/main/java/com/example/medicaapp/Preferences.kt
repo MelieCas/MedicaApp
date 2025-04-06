@@ -64,6 +64,11 @@ class Preferences : AppCompatActivity() {
                     startActivity(intent)
                 }
 
+                R.id.nav_graph -> {
+                    val intent: Intent = Intent( this@Preferences, Graphics::class.java)
+                    startActivity(intent)
+                }
+
             }
             drawerLayout?.closeDrawer(GravityCompat.START)
             true

@@ -21,11 +21,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medicaapp.data.RetrofitServiceFactory
+import com.example.medicaapp.data.getAppointments
+import com.example.medicaapp.data.saveAppointments
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class Appointments : AppCompatActivity() {
     private lateinit var adapterAppointments: AppointmentRVAdapter
@@ -36,6 +41,7 @@ class Appointments : AppCompatActivity() {
     val cites: MutableList<Cites> = ArrayList()
     var bottomNav: BottomNavigationView? = null;
     val service = RetrofitServiceFactory.makeRetrofitService()
+    private var currentDay: String = getCurrentDate()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +108,11 @@ class Appointments : AppCompatActivity() {
                     startActivity(intent)
                 }
 
+                R.id.nav_graph -> {
+                    val intent: Intent = Intent( this@Appointments, Graphics::class.java)
+                    startActivity(intent)
+                }
+
             }
             drawerLayout?.closeDrawer(GravityCompat.START)
             true
@@ -111,6 +122,12 @@ class Appointments : AppCompatActivity() {
             when (it.itemId) {
                 R.id.bottom_preferences -> {
                     val intent: Intent = Intent( this@Appointments, Preferences::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                R.id.bottom_graph -> {
+                    val intent: Intent = Intent( this@Appointments, Graphics::class.java)
                     startActivity(intent)
                     true
                 }
@@ -171,6 +188,9 @@ class Appointments : AppCompatActivity() {
                     lifecycleScope.launch(Dispatchers.IO) {
                         try {
                             createCita(cita)
+                            var currentDateAppointments = getAppointments(applicationContext, currentDay)
+                            currentDateAppointments++
+                            saveAppointments(applicationContext, currentDay, currentDateAppointments)
 
                         } catch (e : Exception) {
                             println(e)
@@ -277,5 +297,10 @@ class Appointments : AppCompatActivity() {
                 println(e)
             }
         }
+    }
+
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
     }
 }
