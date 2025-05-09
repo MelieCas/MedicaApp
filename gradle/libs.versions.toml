@@ -14,6 +14,7 @@ constraintlayout = "2.2.0"
 coreSplashscreen = "1.1.0-rc01"
 retrofitVersion = "2.9.0"
 testng = "6.9.6"
+junitKtx = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +32,7 @@ retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson" }
 retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 squareup-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
 testng = { group = "org.testng", name = "testng", version.ref = "testng" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

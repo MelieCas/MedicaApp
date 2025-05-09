@@ -47,7 +47,7 @@ class SignInViewModelTest {
     fun correuElectronicEsCorrecte() {
         viewModel.setEmail("exempleValid@gmail.com")
 
-        viewModel.chechEmail()
+        viewModel.checkEmail()
         assertEquals("", viewModel.errorEmail.value)
     }
 
@@ -55,7 +55,7 @@ class SignInViewModelTest {
     fun correuElectronicRetornaErrorQuanEsBuit() {
         viewModel.setEmail("")
 
-        viewModel.chechEmail()
+        viewModel.checkEmail()
         assertEquals("El email no pot estar buit", viewModel.errorEmail.value)
     }
 
@@ -63,7 +63,7 @@ class SignInViewModelTest {
     fun correuElectronicRetornaErrorQuanNoTeUsuari() {
         viewModel.setEmail("@novalid.com")
 
-        viewModel.chechEmail()
+        viewModel.checkEmail()
         assertEquals("El format del Gmail no es correcte", viewModel.errorEmail.value)
     }
 
@@ -71,7 +71,7 @@ class SignInViewModelTest {
     fun correuElectronicRetornaErrorQuanTeEspaiEnBlanc() {
         viewModel.setEmail(" @gmail.com")
 
-        viewModel.chechEmail()
+        viewModel.checkEmail()
         assertEquals("El format del Gmail no es correcte", viewModel.errorEmail.value)
     }
 
@@ -79,7 +79,7 @@ class SignInViewModelTest {
     fun correuElectronicRetornaErrorQuanNoTeDomini() {
         viewModel.setEmail("noValid@")
 
-        viewModel.chechEmail()
+        viewModel.checkEmail()
         assertEquals("El format del Gmail no es correcte", viewModel.errorEmail.value)
     }
 
@@ -87,7 +87,7 @@ class SignInViewModelTest {
     fun correuElectronicRetornaErrorQuanNoTePunt() {
         viewModel.setEmail("noValid@gmailcom")
 
-        viewModel.chechEmail()
+        viewModel.checkEmail()
         assertEquals("El format del Gmail no es correcte", viewModel.errorEmail.value)
     }
 
@@ -120,7 +120,7 @@ class SignInViewModelTest {
         viewModel.setPassword("abcde1!")
 
         viewModel.checkPassword()
-        assertEquals("La contrasenya no te majúscules", viewModel.errorPassword.value))
+        assertEquals("La contrasenya no te majúscules", viewModel.errorPassword.value)
     }
 
     @Test

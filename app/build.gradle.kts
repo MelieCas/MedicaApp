@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.squareup.converter.gson)
     implementation(libs.testng)
     implementation(libs.androidx.core.testing)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation(libs.androidx.junit)
