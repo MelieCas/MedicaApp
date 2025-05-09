@@ -70,7 +70,7 @@ class SignInViewModel : ViewModel() {
         }
     }
 
-    public fun chechNom() {
+    public fun checkNom() {
         if (_Nom.isBlank()) {
             _ErrorName.value = "El nom no pot ser buit"
         } else if (_Nom.length <= 2) {
