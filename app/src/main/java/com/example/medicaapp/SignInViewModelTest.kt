@@ -12,7 +12,7 @@ class SignInViewModelTest {
     private val viewModel: SignInViewModel = SignInViewModel()
 
     @Test
-    fun `nom usuari retorna error quan és ofensiu`() {
+    fun nomUsuariRetornaErrorQuanEsOfensiu() {
         viewModel.setUsuari("Puto22")
 
         viewModel.checkUser()
@@ -20,7 +20,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom usuari retorna error quan és buit`() {
+    fun nomUsuariRetornaErrorQuanEsBuit() {
         viewModel.setUsuari("")
 
         viewModel.checkUser()
@@ -28,7 +28,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom usuari retorna error quan és molt curt`() {
+    fun nomUsuariRetornaErrorQuanEsMoltCurt() {
         viewModel.setUsuari("ab")
 
         viewModel.checkUser()
@@ -36,7 +36,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom usuari retorna error quan és molt llarg`() {
+    fun nomUsuariRetornaErrorQuanEsMoltLlarg() {
         viewModel.setUsuari("1234567890123456789012345678901234")
 
         viewModel.checkUser()
@@ -44,7 +44,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `correu electronic és correcte`() {
+    fun correuElectronicEsCorrecte() {
         viewModel.setEmail("exempleValid@gmail.com")
 
         viewModel.chechEmail()
@@ -52,7 +52,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `correu electronic retorna error quan es buit`() {
+    fun correuElectronicRetornaErrorQuanEsBuit() {
         viewModel.setEmail("")
 
         viewModel.chechEmail()
@@ -60,7 +60,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `correu electronic retorna error quan no te usuari`() {
+    fun correuElectronicRetornaErrorQuanNoTeUsuari() {
         viewModel.setEmail("@novalid.com")
 
         viewModel.chechEmail()
@@ -68,7 +68,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `correu electronic retorna error quan te espai en blanc`() {
+    fun correuElectronicRetornaErrorQuanTeEspaiEnBlanc() {
         viewModel.setEmail(" @gmail.com")
 
         viewModel.chechEmail()
@@ -76,7 +76,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `correu electronic retorna error quan no te domini`() {
+    fun correuElectronicRetornaErrorQuanNoTeDomini() {
         viewModel.setEmail("noValid@")
 
         viewModel.chechEmail()
@@ -84,7 +84,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `correu electronic retorna error quan no te punt`() {
+    fun correuElectronicRetornaErrorQuanNoTePunt() {
         viewModel.setEmail("noValid@gmailcom")
 
         viewModel.chechEmail()
@@ -92,7 +92,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `contrasenya és correcte`() {
+    fun contrasenyaEsCorrecte() {
         viewModel.setPassword("aAbB1!")
 
         viewModel.checkPassword()
@@ -100,7 +100,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `contrasenya retorna error quan es buida`() {
+    fun contrasenyaRetornaErrorQuanEsBuida() {
         viewModel.setPassword("")
 
         viewModel.checkPassword()
@@ -108,7 +108,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `cotrasenya retorna error quan es massa curta`() {
+    fun cotrasenyaRetornaErrorQuanEsMassaCurta() {
         viewModel.setPassword("123")
 
         viewModel.checkPassword()
@@ -116,7 +116,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `contrasenya retorna error quan no te majúscules`() {
+    fun contrasenyaRetornaErrorQuanNoTeMajuscules() {
         viewModel.setPassword("abcde1!")
 
         viewModel.checkPassword()
@@ -124,7 +124,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `contrasenya retorna error quan no te minúscules`() {
+    fun contrasenyaRetornaErrorQuanNoTeMinuscules() {
         viewModel.setPassword("ABCDE1!")
 
         viewModel.checkPassword()
@@ -132,7 +132,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `contrasenya retorna error quan no te números`() {
+    fun contrasenyaRetornaErrorQuanNoTeNumeros() {
         viewModel.setPassword("abcdef!")
 
         viewModel.checkPassword()
@@ -140,7 +140,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `contrasenya retorna error quan no te caracters especials`() {
+    fun contrasenyaRetornaErrorQuanNoTeCaractersEspecials() {
         viewModel.setPassword("Abcdef1")
 
         viewModel.checkPassword()
@@ -148,7 +148,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `contrasenya coinicideix amb confirmació`() {
+    fun contrasenyaCoinicideixAmbConfirmacio() {
         viewModel.setPassword("aAbB1!")
         viewModel.setConfirmPassword("aAbB1!")
 
@@ -157,7 +157,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `confirmació contrasenya retorna error quan no coincideix`() {
+    fun confirmacioContrasenyaRetornaErrorQuanNoCoincideix() {
         viewModel.setPassword("aAbB1!")
         viewModel.setConfirmPassword("aAbB2!")
 
@@ -166,7 +166,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom és correcte`() {
+    fun nomEsCorrecte() {
         viewModel.setNom("Kilian")
 
         viewModel.checkNom()
@@ -174,7 +174,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom retorna error quan és buit`() {
+    fun nomRetornaErrorQuanEsBuit() {
         viewModel.setNom("")
 
         viewModel.checkNom()
@@ -182,7 +182,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom retorna error quan és molt curt`() {
+    fun nomRetornaErrorQuanEsMoltCurt() {
         viewModel.setNom("ab")
 
         viewModel.checkNom()
@@ -190,7 +190,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom retorna error quan és molt llarg`() {
+    fun nomRetornaErrorQuanEsMoltLlarg() {
         viewModel.setNom("1234567890123456789012345678901234")
 
         viewModel.checkNom()
@@ -198,7 +198,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `nom retorna error si conté paraules ofensives`() {
+    fun nomRetornaErrorSiConteParaulesOfensives() {
         viewModel.setNom("Puto22")
 
         viewModel.checkNom()
