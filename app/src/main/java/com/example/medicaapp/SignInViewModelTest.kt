@@ -202,7 +202,7 @@ class SignInViewModelTest {
         viewModel.setNom("Puto22")
 
         viewModel.checkNom()
-        assertEquals("El nom no pot ser ofensiu")
+        assertEquals("El nom no pot ser ofensiu", viewModel.errorName.value)
     }
 
 }
